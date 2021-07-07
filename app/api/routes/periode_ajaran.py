@@ -19,10 +19,14 @@ def get_post_periode():
         params = request.form
         # Validate the form
         if not params.get('tahun_ajaran'):
-            return make_response(jsonify({'error': 'Tahun Ajaran diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'Tahun Ajaran diperlukan!'}), 400)
         if not params.get('semester'):
-            return make_response(jsonify({'error': 'Semester diperlukan!'}), 401)
-        # Query to the model
+            return make_response(jsonify({'error': 'Semester diperlukan!'}), 400)
+        # If periode_ajaran with given parameters exists, reject the query
+        query = PeriodeAjaran.query.filter_by(tahun_ajaran=params['tahun_ajaran'], semester=params['semester']).first()
+        if query:
+            return make_response(jsonify({'error': 'periode ajaran sudah ada!'}), 400)
+        # Add to DB
         schema = PeriodeAjaranSchema()
         periode_ajaran = schema.load(params)
         db.session.add(periode_ajaran)
