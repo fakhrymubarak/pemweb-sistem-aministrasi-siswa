@@ -68,7 +68,7 @@ def siswa_by_nis(nis):
         # Create JSON response
         schema = SiswaSchema()
         result = schema.dump(get_siswa)
-        return make_response(jsonify({'message': 'update successful', 'result': result}), 209)
+        return make_response(jsonify({'message': 'update successful', 'result': result}), 200)
     # DELETE ONE SISWA
     if request.method == "DELETE":
         get_siswa = db.session.query(Siswa).get(nis)
