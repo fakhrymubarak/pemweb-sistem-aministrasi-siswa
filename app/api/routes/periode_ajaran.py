@@ -13,7 +13,7 @@ def get_post_periode():
         all_periode = db.session.query(PeriodeAjaran).all()
         schema = PeriodeAjaranSchema(many=True)
         result = schema.dump(all_periode)
-        return make_response(jsonify({"periode_ajaran": result}), 201)
+        return make_response(jsonify({"periode_ajaran": result}), 200)
     # POST PERIODE AJARAN
     elif request.method == "POST":
         params = request.form
@@ -52,7 +52,7 @@ def periode_by_id(id):
         get_periode = db.session.query(PeriodeAjaran).get(id)
         if get_periode is None:
             return make_response(jsonify({'error': 'PeriodeAjaran not found!'}), 404)
-        # Validate jenis_kelamin
+        # Validate semester
         if params.get('semester') and params.get('semester') not in ('Ganjil', 'Genap'):
             return make_response(jsonify({'error': 'Semester tidak valid!'}), 400)
         # Update periode_ajaran based on params
@@ -62,7 +62,7 @@ def periode_by_id(id):
         # Create JSON response
         schema = PeriodeAjaranSchema()
         result = schema.dump(get_periode)
-        return make_response(jsonify({'message': 'update successful', 'result': result}), 209)
+        return make_response(jsonify({'message': 'update successful', 'result': result}), 200)
     # DELETE ONE PERIODE AJARAN
     if request.method == "DELETE":
         get_periode = db.session.query(PeriodeAjaran).get(id)

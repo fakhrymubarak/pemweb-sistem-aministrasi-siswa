@@ -12,7 +12,7 @@ def get_post_jurusan():
         all_jurusan = db.session.query(Mapel).join(Jurusan).all()
         schema = MapelSchema(many=True)
         result = schema.dump(all_jurusan)
-        return make_response(jsonify({"jurusan": result}), 201)
+        return make_response(jsonify({"jurusan": result}), 200)
     # POST JURUSAN
     elif request.method == "POST":
         params = request.form
@@ -54,7 +54,7 @@ def mapel_by_id(id_mapel):
         # Create JSON response
         schema = MapelSchema()
         result = schema.dump(get_mapel)
-        return make_response(jsonify({'message': 'update successful', 'result': result}), 209)
+        return make_response(jsonify({'message': 'update successful', 'result': result}), 200)
     # DELETE ONE MAPEL
     if request.method == "DELETE":
         get_mapel = db.session.query(Mapel).get(id_mapel)
