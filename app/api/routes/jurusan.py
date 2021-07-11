@@ -12,13 +12,13 @@ def get_post_jurusan():
         all_jurusan = db.session.query(Jurusan).all()
         schema = JurusanSchema(many=True)
         result = schema.dump(all_jurusan)
-        return make_response(jsonify({"jurusan": result}), 201)
+        return make_response(jsonify({"jurusan": result}), 200)
     # POST JURUSAN
     elif request.method == "POST":
         params = request.form
         # Validate the form
         if not params.get('nama_jurusan'):
-            return make_response(jsonify({'error': 'Nama jurusan diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'Nama jurusan diperlukan!'}), 400)
         # Query to the model
         schema = JurusanSchema()
         jurusan = schema.load(params)

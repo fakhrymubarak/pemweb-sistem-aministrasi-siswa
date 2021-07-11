@@ -12,26 +12,26 @@ def get_post_siswa():
         all_siswa = db.session.query(Siswa).join(Kelas).all()
         schema = SiswaSchema(many=True)
         result = schema.dump(all_siswa)
-        return make_response(jsonify({"siswa": result}), 201)
+        return make_response(jsonify({"siswa": result}), 200)
     # POST SISWA
     elif request.method == "POST":
         params = request.form
         # Validate the form
         if not params.get('nis'):
-            return make_response(jsonify({'error': 'NIS diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'NIS diperlukan!'}), 400)
         if not params.get('nama_siswa'):
-            return make_response(jsonify({'error': 'Nama diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'Nama diperlukan!'}), 400)
         if not params.get('email'):
-            return make_response(jsonify({'error': 'Email diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'Email diperlukan!'}), 400)
         if not params.get('jenkel'):
-            return make_response(jsonify({'error': 'Jenkel diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'Jenkel diperlukan!'}), 400)
         if not params.get('id_kelas'):
-            return make_response(jsonify({'error': 'id_kelas diperlukan!'}), 401)
+            return make_response(jsonify({'error': 'id_kelas diperlukan!'}), 400)
         if params.get('jenkel') not in ('L', 'P'):
-            return make_response(jsonify({'error': 'jenis kelamin tidak valid!'}), 401)
+            return make_response(jsonify({'error': 'jenis kelamin tidak valid!'}), 400)
         # If siswa already exist, reject request
         if db.session.query(Siswa).get(params['nis']):
-            return make_response(jsonify({'error': 'Siswa with this NIS already exist!'}), 401)
+            return make_response(jsonify({'error': 'Siswa with this NIS already exist!'}), 400)
         # Query to the model
         schema = SiswaSchema()
         siswa = schema.load(params)
@@ -68,7 +68,7 @@ def siswa_by_nis(nis):
         # Create JSON response
         schema = SiswaSchema()
         result = schema.dump(get_siswa)
-        return make_response(jsonify({'message': 'update successful', 'result': result}), 209)
+        return make_response(jsonify({'message': 'update successful', 'result': result}), 200)
     # DELETE ONE SISWA
     if request.method == "DELETE":
         get_siswa = db.session.query(Siswa).get(nis)

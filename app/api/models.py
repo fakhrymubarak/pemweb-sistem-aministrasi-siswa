@@ -63,9 +63,12 @@ class Mapel(db.Model):
 
 class PeriodeAjaran(db.Model):
     __tablename__ = 'periode_ajaran'
+    __table_args__ = (
+        db.Index('unik', 'tahun_ajaran', 'semester'),
+    )
 
     id = db.Column(db.SmallInteger, primary_key=True)
-    tahun_ajaran = db.Column(db.String(9), nullable=False, unique=True)
+    tahun_ajaran = db.Column(db.String(9), nullable=False)
     semester = db.Column(db.Enum('Ganjil', 'Genap'), nullable=False)
 
 
@@ -76,7 +79,7 @@ class RaporNilai(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nis = db.Column(db.ForeignKey('siswa.nis'), nullable=False, index=True)
     id_mapel = db.Column(db.ForeignKey('mapel.id_mapel'), nullable=False, index=True)
-    nilai = db.Column(db.Numeric(5, 2))
+    nilai = db.Column(db.Integer)
     periode_nilai = db.Column(db.ForeignKey('periode_ajaran.id'), nullable=False, index=True)
 
     mapel = db.relationship('Mapel', primaryjoin='RaporNilai.id_mapel == Mapel.id_mapel', backref='rapor_nilais')
