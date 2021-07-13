@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.kelas import KelasSchema
 from api.models import Kelas
 from api import db
+from flask_jwt_extended import jwt_required
 
 kelas = Blueprint('kelas', __name__)
 
 @kelas.route('/kelas', methods=["GET", "POST"])
+@jwt_required()
 def get_post_kelas():
     # GET ALL KELAS
     if request.method == "GET":
@@ -43,6 +45,7 @@ def get_post_kelas():
         return make_response(jsonify({'message': 'post success', 'data': result}), 201)
 
 @kelas.route('/kelas/<id_kelas>', methods=["GET", "DELETE", "PUT"])
+@jwt_required()
 def kelas_by_id(id_kelas):
     # GET ONE KELAS
     if request.method == "GET":

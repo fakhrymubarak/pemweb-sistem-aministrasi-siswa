@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.siswa import SiswaSchema
 from api.models import Siswa, Kelas
 from api import db
+from flask_jwt_extended import jwt_required
 
 siswa = Blueprint('siswa', __name__)
 
 @siswa.route('/siswa', methods=["GET", "POST"])
+@jwt_required()
 def get_post_siswa():
     # GET ALL SISWA
     if request.method == "GET":
@@ -42,6 +44,7 @@ def get_post_siswa():
         return make_response(jsonify({'message': 'post success', 'data': result}), 201)
 
 @siswa.route('/siswa/<nis>', methods=["GET", "DELETE", "PUT"])
+@jwt_required()
 def siswa_by_nis(nis):
     # GET ONE SISWA
     if request.method == "GET":

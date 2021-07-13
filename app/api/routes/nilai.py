@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.nilai import RaporNilaiSchema
 from api.models import RaporNilai
 from api import db
+from flask_jwt_extended import jwt_required
 
 nilai = Blueprint('nilai', __name__)
 
@@ -22,6 +23,7 @@ def get_nilai_individual():
     return make_response(jsonify({'result': result, 'total': total, 'rerata': avg}), 200)
 
 @nilai.route('/nilai', methods=['POST'])
+@jwt_required()
 def post_nilai_individual():
     params = request.form
      # Validate the form

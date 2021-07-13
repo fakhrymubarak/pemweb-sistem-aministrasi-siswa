@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.mapel import MapelSchema
 from api.models import Mapel, Jurusan
 from api import db
+from flask_jwt_extended import jwt_required
 
 mapel = Blueprint('mapel', __name__)
 
 @mapel.route('/mapel', methods=['GET', 'POST'])
+@jwt_required()
 def get_post_jurusan():
     # GET ALL JURUSAN
     if request.method == "GET":
@@ -31,6 +33,7 @@ def get_post_jurusan():
         return make_response(jsonify({'message': 'post success', 'data': result}), 201)
 
 @mapel.route('/mapel/<id_mapel>', methods=["GET", "DELETE", "PUT"])
+@jwt_required()
 def mapel_by_id(id_mapel):
     # GET ONE MAPEL
     if request.method == "GET":

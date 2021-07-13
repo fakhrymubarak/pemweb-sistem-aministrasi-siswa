@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.jurusan import JurusanSchema
 from api.models import Jurusan
 from api import db
+from flask_jwt_extended import jwt_required
 
 jurusan = Blueprint('jurusan', __name__)
 
 @jurusan.route('/jurusan', methods=['GET', 'POST'])
+@jwt_required()
 def get_post_jurusan():
     # GET ALL JURUSAN
     if request.method == "GET":
@@ -29,6 +31,7 @@ def get_post_jurusan():
         return make_response(jsonify({'message': 'post success', 'data': result}), 201)
 
 @jurusan.route('/jurusan/<id_jurusan>', methods=["GET", "DELETE"])
+@jwt_required()
 def jurusan_by_id(id_jurusan):
     # GET ONE JURUSAN
     if request.method == "GET":
