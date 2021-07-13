@@ -14,7 +14,7 @@ class Admin(db.Model):
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode('utf-8')
     
-    def check_pasword(self, password):
+    def check_password(self, password):
         return check_password_hash(self.password, password)
 
 
@@ -34,7 +34,7 @@ class Guru(db.Model):
     def hash_password(self):
         self.password = generate_password_hash(self.password).decode('utf-8')
     
-    def check_pasword(self, password):
+    def check_password(self, password):
         return check_password_hash(self.password, password)
 
 
