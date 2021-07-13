@@ -34,6 +34,7 @@ def create_app():
         app.register_blueprint(kelas, url_prefix='/api')
 
         from .auth.super_admin import super_admin
+        from .auth.guru import guru
         app.register_blueprint(super_admin, url_prefix='/auth')
-
+        app.register_blueprint(guru, url_prefix='/auth')
     return app
