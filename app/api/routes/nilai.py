@@ -2,21 +2,28 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.nilai import RaporNilaiSchema
 from api.models import RaporNilai
 from api import db
+from flask_jwt_extended import jwt_required
 
 nilai = Blueprint('nilai', __name__)
 
 @nilai.route('/nilai', methods=['GET'])
 def get_nilai_individual():
     args = request.args
-    print(args)
     form_nis = args['nis']
     form_periode = args['periode_nilai']
     query_nilai = db.session.query(RaporNilai).filter_by(nis=form_nis, periode_nilai=form_periode).all()
     schema = RaporNilaiSchema(many=True)
     result = schema.dump(query_nilai)
-    return make_response(jsonify({'result': result}), 200)
+
+    # COUNT TOTAL AND AVERAGE OF NILAI
+    total = avg = 0
+    for item in result:
+        total += item['nilai']
+    avg = total / len(result)
+    return make_response(jsonify({'result': result, 'total': total, 'rerata': avg}), 200)
 
 @nilai.route('/nilai', methods=['POST'])
+@jwt_required()
 def post_nilai_individual():
     params = request.form
      # Validate the form

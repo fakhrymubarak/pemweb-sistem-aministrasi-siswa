@@ -1,5 +1,6 @@
 # coding: utf-8
 from . import db
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 
 class Admin(db.Model):
@@ -9,6 +10,12 @@ class Admin(db.Model):
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     reg_date = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
+
+    def hash_password(self):
+        self.password = generate_password_hash(self.password).decode('utf-8')
+    
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 
@@ -24,6 +31,11 @@ class Guru(db.Model):
     isActive = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     reg_date = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
 
+    def hash_password(self):
+        self.password = generate_password_hash(self.password).decode('utf-8')
+    
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class Jurusan(db.Model):

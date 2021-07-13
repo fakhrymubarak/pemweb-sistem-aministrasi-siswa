@@ -8,6 +8,7 @@ class KelasSchema(SQLAlchemySchema):
     class Meta:
         model = Kelas
         sqla_session = db.session
+        load_instance = True
     
     id_kelas = auto_field(dump_only=True)
     jenjang_kelas = auto_field()

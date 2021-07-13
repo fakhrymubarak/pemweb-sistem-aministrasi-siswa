@@ -2,11 +2,13 @@ from flask import Blueprint, request, jsonify, make_response
 from api.schema.periode_ajaran import PeriodeAjaranSchema
 from api.models import PeriodeAjaran
 from api import db
+from flask_jwt_extended import jwt_required
 
 periode_ajaran = Blueprint('periode_ajaran', __name__)
 
 
 @periode_ajaran.route('/periode_ajaran', methods=["GET", "POST"])
+@jwt_required()
 def get_post_periode():
     # GET ALL PERIODE AJARAN
     if request.method == "GET":
@@ -36,6 +38,7 @@ def get_post_periode():
         return make_response(jsonify({'message': 'post success', 'data': result}), 201)
 
 @periode_ajaran.route('/periode_ajaran/<id>', methods=["GET", "DELETE", "PUT"])
+@jwt_required()
 def periode_by_id(id):
     # GET ONE PERIODE AJARAN
     if request.method == "GET":

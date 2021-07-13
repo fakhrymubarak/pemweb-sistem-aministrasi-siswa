@@ -2,3 +2,5 @@
 venv
 app/**/__pycache__/
 main_old.py
+./api/config.py
+.env
